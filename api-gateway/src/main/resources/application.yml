@@ -1,0 +1,39 @@
+server:
+  port: 8080
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: company-service
+          uri: lb://COMPANY-SERVICE
+          predicates:
+            - Path=/company/**
+          filters:
+            - AuthenticationFilter
+
+        - id: position-service
+          uri: lb://POSITIONS-SERVICE
+          predicates:
+            - Path=/position/**
+          filters:
+            - AuthenticationFilter
+
+        - id: recommendation-service
+          uri: lb://RECOMMENDATION-SERVICE
+          predicates:
+            - Path=/recommendation/**
+          filters:
+            - AuthenticationFilter
+
+        - id: auth-service
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth/**
+
+  application:
+    name: APIGATEWAY-SERVICE
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
